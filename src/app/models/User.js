@@ -24,6 +24,39 @@ const sql = require('./db.js');
       
    };
 
+   User.getAll = (name, result) => {
+    let query = "SELECT * FROM usuario";
+    if (name) {
+      query += ` WHERE name LIKE '%${this.name}%'`;
+    }
+    sql.query(query, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("usuarios: ", res);
+      result(null, res);
+    });
+  };
+
+
+   User.findById = (id, result) => {
+       sql.query(`select * from usuario where id = ${id}`, (err, res) => {
+           if(err) {
+               console.log("error:", err);
+               result(err, null);
+           }
+
+           if(res.length){
+               console.log("found user:", res[0]);
+               result(null, res[0]);
+               return;
+           }
+
+           result({kind: "Not found"}, null);
+       });
+   };
 
 
 
