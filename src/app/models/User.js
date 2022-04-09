@@ -77,20 +77,21 @@ User.updateUser = (idusuario,user, result) => {
 };
 
 
-User.remove = (idusuario, result) => {
-    sql.query(`DELETE FROM usuario WHERE idusuario = ${idusuario};`,
+User.remove = (id, result) => {
+ 
+    sql.query(`DELETE FROM usuario WHERE usuario.idusuario = ?`,[id],
      (err, res) => {
-      if (err) {
+      if (err) { 
         console.log("error: ", err);
         result(null, err);
         return;
       }
       if (res.affectedRows == 0) {
-        // not found Tutorial with the id
+        // not found user with the id
         result({ kind: "not_found" }, null);
         return;
       }
-      console.log("deleted usuario with id: ", idusuario);
+      console.log("deleted usuario with id: ", id);
       result(null, res);
     });
   };
